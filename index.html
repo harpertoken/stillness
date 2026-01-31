@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>harpertoken</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        background: linear-gradient(135deg, #f0f9ff 0%, #fce7f3 50%, #ecfdf5 100%);
+        position: relative;
+      }
+
+      .container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .gradient-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(147, 197, 253, 0.25) 0%,
+          rgba(196, 181, 253, 0.15) 25%,
+          rgba(254, 202, 202, 0.2) 50%,
+          rgba(167, 243, 208, 0.15) 75%,
+          rgba(253, 230, 138, 0.1) 100%
+        );
+        transition: all 3s ease-out;
+      }
+
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        mix-blend-mode: multiply;
+        filter: blur(80px);
+        opacity: 0.2;
+      }
+
+      .blob-1 {
+        width: 400px;
+        height: 400px;
+        background: #93c5fd;
+        top: 80px;
+        left: 80px;
+        animation: float 15s ease-in-out infinite;
+      }
+
+      .blob-2 {
+        width: 400px;
+        height: 400px;
+        background: #fca5a5;
+        top: 160px;
+        right: 80px;
+        animation: float 18s ease-in-out infinite;
+        animation-delay: -2s;
+      }
+
+      .blob-3 {
+        width: 400px;
+        height: 400px;
+        background: #a7f3d0;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: float 20s ease-in-out infinite;
+        animation-delay: -4s;
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translate(0, 0);
+        }
+        33% {
+          transform: translate(40px, -60px);
+        }
+        66% {
+          transform: translate(-30px, 40px);
+        }
+      }
+
+      .content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        padding: 40px;
+        max-width: 600px;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 12vw, 7rem);
+        font-weight: 200;
+        letter-spacing: 0.15em;
+        color: #475569;
+        margin-bottom: 24px;
+        animation: slideScale 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        text-transform: lowercase;
+      }
+
+      .divider {
+        width: 128px;
+        height: 1px;
+        background: linear-gradient(to right, transparent, #cbd5e1, transparent);
+        margin: 0 auto 48px;
+        animation: expandWidth 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+      }
+
+
+
+      @keyframes slideScale {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+          filter: blur(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+
+      @keyframes expandWidth {
+        from {
+          width: 0;
+          opacity: 0;
+        }
+        to {
+          width: 128px;
+          opacity: 1;
+        }
+      }
+
+      .mouse-tracker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          margin-bottom: 16px;
+        }
+
+        .divider {
+          margin-bottom: 32px;
+        }
+
+        .blob {
+          filter: blur(60px);
+        }
+
+        .blob-1 {
+          width: 250px;
+          height: 250px;
+          top: 50px;
+          left: 50px;
+        }
+
+        .blob-2 {
+          width: 250px;
+          height: 250px;
+          right: 50px;
+        }
+
+        .blob-3 {
+          width: 250px;
+          height: 250px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="background">
+        <div class="gradient-bg" id="gradientBg"></div>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+      </div>
+
+      <div class="content">
+        <h1>harpertoken</h1>
+        <div class="divider"></div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) * 100;
+        const y = (e.clientY / window.innerHeight) * 100;
+
+        const gradientBg = document.getElementById('gradientBg');
+        gradientBg.style.backgroundImage = `radial-gradient(
+          circle at ${x}% ${y}%,
+          rgba(147, 197, 253, 0.3) 0%,
+          rgba(196, 181, 253, 0.2) 25%,
+          rgba(254, 202, 202, 0.25) 50%,
+          rgba(167, 243, 208, 0.2) 75%,
+          rgba(253, 230, 138, 0.15) 100%
+        )`;
+      });
+    </script>
+  </body>
+</html>
